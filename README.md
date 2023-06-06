@@ -426,6 +426,20 @@ $ pyard --splits B14
 B14 = B64/B65
 ```
 
+Use `--validate` to validate a GL String.
+```shell
+$ pyard --validate "A*01:01"
+$ pyard --validate "A*01:0"
+# Invalid HLA Typing: A*01:0 is not valid GL String.
+#  A*01:0 is not a valid Allele
+```
+
+Use `--cwd` to reduce a MAC code or an allele list GL String to CWD reduced list.
+```shell
+$ pyard --cwd "B*15:01:01/B*15:01:03/B*15:04/B*15:07/B*15:26N/B*15:27"
+# B*15:01/B*15:07
+```
+
 ### `pyard-csv-reduce` Batch Reduce a CSV file
 
 `pyard-csv-reduce` can be used to batch process a CSV file with HLA typings. See [documentation](extras/README.md) for detailed information about all the options.

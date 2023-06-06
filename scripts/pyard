@@ -26,7 +26,7 @@ import sys
 
 from pyard.constants import VALID_REDUCTION_TYPES
 import pyard.misc
-from pyard.exceptions import InvalidAlleleError
+from pyard.exceptions import InvalidAlleleError, InvalidTypingError
 from pyard.misc import get_data_dir, get_imgt_version
 
 if __name__ == "__main__":
@@ -63,6 +63,8 @@ if __name__ == "__main__":
         help="Reduction Method",
     )
     parser.add_argument("--splits", dest="splits", help="Find Broad and Splits")
+    parser.add_argument("--cwd", dest="cwd", help="Reduce to CWD reduced list")
+    parser.add_argument("--validate", dest="validate", help="Validate a GL String")
 
     args = parser.parse_args()
 
@@ -80,6 +82,19 @@ if __name__ == "__main__":
         mapping = pyard.find_broad_splits(args.splits)
         if mapping:
             print(f"{mapping[0]} = {'/'.join(mapping[1])}")
+        sys.exit(0)
+
+    # Return 0 if valid. 1 if invalid.
+    if args.validate:
+        try:
+            ard.validate(args.validate)
+            sys.exit(0)
+        except InvalidTypingError as e:
+            print(e)
+            sys.exit(1)
+
+    if args.cwd:
+        print(ard.cwd_redux(args.cwd))
         sys.exit(0)
 
     try:
